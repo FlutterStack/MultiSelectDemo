@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:multi_select_demo/models/selectionList.dart';
+import 'package:multi_select_demo/customDialog.dart';
 import 'package:multi_select_demo/provider/listProvider.dart';
 import 'package:multi_select_demo/selection.dart';
 import 'package:provider/provider.dart';
@@ -40,8 +40,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final selectionList = context
         .watch<ListProvider>()
-        .selectionList
-        .where((element) => element.selected)
+        .listData
+        .where((element) => element.selection)
         .toList();
     return Scaffold(
       appBar: AppBar(
@@ -62,8 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
         itemBuilder: (context, index) {
           final item = selectionList[index];
           return ListTile(
-            title: Text(item.name),
-            subtitle: Text(item.description),
+            title: Text(item.firstName!),
+            subtitle: Text(item.email!),
             trailing: IconButton(
               icon: Icon(Icons.delete),
               onPressed: () =>
@@ -71,6 +71,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showDialog(
+          context: context,
+          builder: (context) => CustomDialog(),
+        ),
+        child: Icon(Icons.add),
+        backgroundColor: Colors.pink,
+        foregroundColor: Colors.white,
       ),
     );
   }
